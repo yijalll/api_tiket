@@ -17,7 +17,7 @@ POST data users structure:
     "password": "123123",
     "confPassword": "123123"
 }
-```
+``` kata kata
 
 GET data users structure:
 
