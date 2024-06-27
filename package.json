@@ -1,11 +1,12 @@
 {
-  "name": "temantb-api",
+  "name": "travapp",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "api": "nodemon server.js"
+    "api": "nodemon index.js",
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",

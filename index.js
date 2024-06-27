@@ -1,8 +1,8 @@
+require("dotenv").config();
 const express = require("express");
-const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const app = express();
-const port = 8000;
+const port = process.env.PORT || 9000;
 const db = require("./config/Database");
 const routerUser = require("./routes/route");
 const cors = require("cors");
@@ -12,9 +12,6 @@ const routerjurusan = require("./routes/Jurusanroute")
 const routepaket = require("./routes/Paketroute")
 const routetransaksi = require("./routes/Transaksiroute")
 const routeAuth = require("./routes/Authroute")
-
-
-dotenv.config();
 
 try {
   db.authenticate();

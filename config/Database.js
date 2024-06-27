@@ -1,6 +1,6 @@
 const { Sequelize } = require("sequelize");
 
-const db = new Sequelize("skripsi", "root", "", {
+const db = new Sequelize("travapp", "root", "", {
   host: "localhost",
   dialect: "mysql",
 });
