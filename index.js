@@ -13,13 +13,13 @@ const routepaket = require("./routes/Paketroute")
 const routetransaksi = require("./routes/Transaksiroute")
 const routeAuth = require("./routes/Authroute")
 
-try {
-  db.authenticate();
-  console.log("database connected");
-} catch (error) {
-  console.error(error);
-}
-db.sync({force:false})
+// try {
+//   db.authenticate();
+//   console.log("database connected");
+// } catch (error) {
+//   console.error(error);
+// }
+// db.sync({alter:true})
 
 app.use(cors());
 app.use(cookieParser());

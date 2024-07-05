@@ -40,7 +40,7 @@ const getPaketById = async (req, res) => {
 
 const createPaket = async (req, res) => {
     try {
-        const { kota_id, alamat_pickup, alamat_deliv, nama_penerima, telp_penerima, nama_pengirim, telp_pengirim, status, keterangan, id_user } = req.body;
+        const { kota_id, alamat_pickup, alamat_deliv, nama_penerima, telp_penerima, nama_pengirim, telp_pengirim, status, id_user, isi_paket, provinsi, kota_kab, kecamatan, kelurahan,  } = req.body;
 
         const data = await Paket.create({
             kota_id,
@@ -51,8 +51,12 @@ const createPaket = async (req, res) => {
             nama_pengirim,
             telp_pengirim,
             status,
-            keterangan,
-            id_user
+            id_user,
+            isi_paket,
+            provinsi,
+            kota_kab,
+            kecamatan,
+            kelurahan
         });
         return res.status(201).json({
             data: data,

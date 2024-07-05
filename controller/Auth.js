@@ -45,11 +45,14 @@ const Register = async (req, res) => {
   }
 };
 
+
 const Login = async (req, res) => {
   try {
-    const user = await User.findOne({
+    const { email, password } = req.body;
+
+          const user = await User.findOne({
       where: {
-        email: req.body.email,
+        email: email,
       },
     });
 
@@ -59,7 +62,7 @@ const Login = async (req, res) => {
       });
     }
 
-    const passwordMatch = await bcrypt.compare(req.body.password, user.password);
+    const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
       return res.status(400).json({
@@ -68,14 +71,33 @@ const Login = async (req, res) => {
     }
 
     const payload = {
-      id : user.id,
-      email : user.email
-    }
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "2h",
-    }); //set token with expires 2 hours
+      id: user.id,
+      email: user.email,
+    };
 
-    res.json({ token });
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "30d",
+    });
+
+    const refresh_token = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
+      expiresIn: "3d",
+    });
+
+    await User.update(
+      { refresh_token: refresh_token },
+      {
+        where: {
+          id: user.id, 
+        },
+      }
+    );
+
+    res.cookie("refreshToken", refresh_token, {
+      httpOnly: true,
+      maxAge: 3 * 24 * 60 * 60 * 1000, 
+    });
+
+    res.json({ token, refresh_token });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -83,6 +105,7 @@ const Login = async (req, res) => {
     });
   }
 };
+
 
 const Logout = async (req, res) => {
   // Remove refreshToken logic as it's not needed

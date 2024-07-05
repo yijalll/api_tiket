@@ -25,7 +25,7 @@ const RefreshToken = async (req, res) => {
           return res.sendStatus(403);
         }
         const id = user[0].userID;
-        const name = user[0].name;
+        const name = user[0].name;  
         const email = user[0].email;
         const accessToken = jwt.sign(
           { id, name, email },

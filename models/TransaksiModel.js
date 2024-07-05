@@ -42,7 +42,6 @@ const Transaksi = db.define(
         },
 
 
-
         ispaid:{
             type:DataTypes.BOOLEAN,
             defaultValue: 0,
@@ -57,13 +56,13 @@ const Transaksi = db.define(
             }
         },
 
-        jumlah_seat:{
-            type:DataTypes.INTEGER(2), 
+        alamat:{
+            type:DataTypes.STRING(25), 
             allowNull: false
         },
 
-        jumlah_bayar:{
-            type:DataTypes.INTEGER,
+        kontak_darurat:{
+            type:DataTypes.STRING(15), 
             allowNull: false
         },
 

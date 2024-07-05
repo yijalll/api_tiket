@@ -56,10 +56,30 @@ const Paket = db.define(
             allowNull:false
         },
 
-        keterangan:{
+        isi_paket:{
             type:DataTypes.STRING(25),
             allowNull:false
         },
+        provinsi:{
+            type:DataTypes.INTEGER(15),
+            allowNull:false
+        },
+
+        kota_kab:{
+            type:DataTypes.STRING(10),
+            allowNull:false
+        },
+
+        kecamatan:{
+            type:DataTypes.STRING(25),
+            allowNull:false
+        },
+         
+        kelurahan:{
+            type:DataTypes.STRING(25),
+            allowNull:false
+        },
+
         id_user:{
             type:DataTypes.INTEGER,
             allowNull:false,
