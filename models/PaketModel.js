@@ -60,11 +60,7 @@ const Paket = db.define(
             type:DataTypes.STRING(25),
             allowNull:false
         },
-        provinsi:{
-            type:DataTypes.INTEGER(15),
-            allowNull:false
-        },
-
+        
         kota_kab:{
             type:DataTypes.STRING(10),
             allowNull:false
