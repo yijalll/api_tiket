@@ -39,6 +39,28 @@ const getUser = async (req, res) => {
   }
 };
 
+const getProfile = async (req, res) => {
+  const id = req.id;
+  try {
+    const user = await User.findByPk(id);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).json({
+      data: user,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+}
+
 const createUser = async (req, res) => {
   const { name, email, phone, password, confPassword, role } = req.body;
   if (password !== confPassword) {
@@ -152,4 +174,4 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { getUsers, getUser, createUser, updateUser, deleteUser };
+module.exports = { getUsers, getUser, createUser, updateUser, deleteUser, getProfile };

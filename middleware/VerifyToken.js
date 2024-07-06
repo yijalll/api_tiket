@@ -16,12 +16,11 @@ const verifyToken = async(req, res, next) => {
     //     }
     // });
     // if(blacklist)return res.sendStatus(403);
-    console.log (authHeader)
-    console.log (token)
     try {
         const jwtVerify = jwt.verify(token, process.env.JWT_SECRET)
         req.id = jwtVerify.id;
         req.email = jwtVerify.email;
+        
         // console.log(jwtVerify);
         next();
     } catch (error) {
