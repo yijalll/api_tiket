@@ -61,9 +61,11 @@ const createTransaksi = async (req, res) => {
                 id : jurusan_id
             }
         })
-        if(!jurusan_id) return res.status(404).json ({massage : "jurusan tidak ditemukan"}) 
+        if(!jurusan) return res.status(404).json ({massage : "jurusan tidak ditemukan"}) 
 
-        const bukti_bayar = "Blank.png";
+        // const bukti_bayar = "Blank.png";
+        const bukti_bayar = req.file?.cloudStoragePublicUrl || "Blank.png";
+
         const newTransaksi = await Transaksi.create({
             jurusan_id,
             nama,
@@ -73,7 +75,7 @@ const createTransaksi = async (req, res) => {
             user_id,
             alamat,
             kontak_darurat,
-            bukti_bayar 
+            bukti_bayar
         });
 
         const responseData = {
@@ -95,7 +97,7 @@ const createTransaksi = async (req, res) => {
         };
 
         return res.status(201).json({
-            data: [responseData],
+            data: responseData,
             message: "success post data",
         });
     } catch (error) {

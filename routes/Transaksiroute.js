@@ -2,10 +2,11 @@ const express = require("express");
 const router = express.Router();
 const{getTransaksi, createTransaksi, updateTransaksi, deleteTransaksi, getTransaksiById} = require ("../controller/Transaksi");
 const { verifyToken } = require("../middleware/VerifyToken");
+const { multerValidation, uploadGcs } = require("../helper/gcsUpload");
 
 router.get("/transaksi", verifyToken, getTransaksi);
 router.get("/transaksi/:id",verifyToken, getTransaksiById);
-router.post("/transaksi", verifyToken, createTransaksi);
+router.post("/transaksi", verifyToken, multerValidation, uploadGcs, createTransaksi);
 router.put("/transaksi/:id", verifyToken, updateTransaksi);
 router.delete("/transaksi/:id",verifyToken, deleteTransaksi);
 
