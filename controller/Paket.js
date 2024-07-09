@@ -40,9 +40,9 @@ const getPaketById = async (req, res) => {
 
 const createPaket = async (req, res) => {
     try {
-        const { kota_id, alamat_pickup, alamat_deliv, nama_penerima, telp_penerima, nama_pengirim, telp_pengirim, status, id_user, isi_paket, provinsi, kota_kab, kecamatan, kelurahan,  } = req.body;
+        const { kota_id, alamat_pickup, alamat_deliv, nama_penerima, telp_penerima, nama_pengirim, telp_pengirim, status, id_user, isi_paket, provinsi, kota_kab, kecamatan, kelurahan, } = req.body;
 
-        const data = await Paket.create({
+       await Paket.create({
             kota_id,
             alamat_pickup,
             alamat_deliv,
@@ -58,9 +58,31 @@ const createPaket = async (req, res) => {
             kecamatan,
             kelurahan
         });
+
+        const responData = {
+            isi: isi_paket,
+            pengirim: {
+                nama: nama_pengirim,
+                telp: telp_pengirim,
+                alamat: alamat_pickup,
+                provinsi: provinsi,
+                kota_kab: kota_kab,
+                kecamatan: kecamatan,
+                kelurahan: kelurahan
+            },
+            penerima: {
+                nama: nama_penerima,
+                telp: telp_penerima,
+                alamat: alamat_deliv,
+                provinsi: provinsi,
+                kota_kab: kota_kab,
+                kecamatan: kecamatan,
+                kelurahan: kelurahan
+            }
+        }
         return res.status(201).json({
-            data: data,
-            message: "success post data",
+            data: responData,
+            message: "Berhasil menginput data paket",
         });
     } catch (error) {
         console.error(error);

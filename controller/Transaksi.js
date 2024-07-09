@@ -73,7 +73,7 @@ const createTransaksi = async (req, res) => {
             user_id,
             alamat,
             kontak_darurat,
-            bukti_bayar
+            bukti_bayar 
         });
 
         const responseData = {
