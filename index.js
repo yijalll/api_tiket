@@ -12,7 +12,7 @@ const routerjurusan = require("./routes/Jurusanroute")
 const routepaket = require("./routes/Paketroute")
 const routetransaksi = require("./routes/Transaksiroute")
 const routeAuth = require("./routes/Authroute")
-
+ 
 // try {
 //   db.authenticate();
 //   console.log("database connected");
@@ -20,7 +20,7 @@ const routeAuth = require("./routes/Authroute")
 //   console.error(error);
 // }
 // db.sync({alter:true})
-
+ 
 app.use(cors());
 app.use(cookieParser());
 app.use(express.json());

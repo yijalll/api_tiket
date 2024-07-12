@@ -14,13 +14,14 @@ const Paket = db.define(
             allowNull: false
         },
 
-        kota_id:{
-            type:DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: KotaModel,
-                key: 'id'
-            }
+        provinsi_pengirim:{
+            type:DataTypes.STRING(40),
+            allowNull:false
+        },
+
+        provinsi_penerima:{
+            type:DataTypes.STRING(40),
+            allowNull:false
         },
 
         alamat_pickup:{
@@ -51,27 +52,36 @@ const Paket = db.define(
             allowNull:false
         },
 
-        status:{
-            type:DataTypes.STRING(10),
-            allowNull:false
-        },
-
         isi_paket:{
             type:DataTypes.STRING(25),
             allowNull:false
         },
         
-        kota_kab:{
+        kota_kab_pengirim:{
             type:DataTypes.STRING(10),
             allowNull:false
         },
 
-        kecamatan:{
+        kota_kab_penerima:{
+            type:DataTypes.STRING(10),
+            allowNull:false
+        },
+
+        kecamatan_pengirim:{
+            type:DataTypes.STRING(25),
+            allowNull:false
+        },
+
+        kecamatan_penerima:{
             type:DataTypes.STRING(25),
             allowNull:false
         },
          
-        kelurahan:{
+        kelurahan_pengirim:{
+            type:DataTypes.STRING(25),
+            allowNull:false
+        },
+        kelurahan_penerima:{
             type:DataTypes.STRING(25),
             allowNull:false
         },
@@ -95,7 +105,5 @@ const Paket = db.define(
 //relasi
 Users.hasMany(Paket,{foreignKey:"id_user"})
 Paket.belongsTo(Users,{foreignKey:"id_user"})
-KotaModel.hasMany(Paket,{foreignKey:"kota_id"})
-Paket.belongsTo(KotaModel,{foreignKey:"kota_id"})
 
 module.exports = Paket
