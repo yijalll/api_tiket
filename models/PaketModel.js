@@ -1,4 +1,4 @@
-const { Sequelize } = require ("sequelize");
+const { Sequelize, ENUM } = require ("sequelize");
 const { DataTypes } = Sequelize;
 const db = require('../config/Database');
 const Users = require("./UserModel");
@@ -84,6 +84,12 @@ const Paket = db.define(
         kelurahan_penerima:{
             type:DataTypes.STRING(25),
             allowNull:false
+        },
+
+        status : {
+            type: DataTypes.ENUM(["Diproses","Diterima"]),
+            allowNull: false,
+            defaultValue : "Diproses"
         },
 
         id_user:{

@@ -123,12 +123,30 @@ const createPaket = async (req, res) => {
 const updatePaket = async (req, res) => {
     try {
         const { id } = req.params;
-        const { kota_id, alamat_pickup, alamat_deliv, nama_penerima, telp_penerima, nama_pengirim, telp_pengirim, status, keterangan, id_user } = req.body;
+        const {isi, pengirim, penerima} = req.body; 
 
         const [updated] = await Paket.update(
-            { kota_id, alamat_pickup, alamat_deliv, nama_penerima, telp_penerima, nama_pengirim, telp_pengirim, status, keterangan, id_user },
+           {
+            alamat_pickup: pengirim.alamat,
+            alamat_deliv: penerima.alamat,
+            nama_penerima: penerima.nama,
+            telp_penerima: penerima.telp,
+            nama_pengirim: pengirim.nama,
+            telp_pengirim: pengirim.telp,
+            id_user: req.id,
+            isi_paket: isi,
+            provinsi_penerima: penerima.provinsi,
+            provinsi_pengirim: pengirim.provinsi,
+            kota_kab_penerima: penerima.kota_kab,
+            kota_kab_pengirim: pengirim.kota_kab,
+            kecamatan_pengirim: pengirim.kecamatan,
+            kecamatan_penerima: penerima.kecamatan,
+            kelurahan_pengirim: pengirim.kelurahan,
+            kelurahan_penerima: penerima.kelurahan
+           },
             { where: { id } }
         );
+
 
         if (updated === 0) {
             return res.status(404).json({
@@ -172,4 +190,32 @@ const deletePaket = async (req, res) => {
     }
 };
 
-module.exports = { getPaket, getPaketById, createPaket, updatePaket, deletePaket };
+const update_status = async(req,res) => {
+    try { 
+        const {id}= req.params
+        const [updated] = await Paket.update(
+            {
+             status : "Diterima"
+            },
+             { where: { id } }
+         );
+ 
+ 
+         if (updated === 0) {
+             return res.status(404).json({
+                 message: "Paket not found",
+             });
+         }
+ 
+         return res.status(200).json({
+             message: "success update data",
+         });
+     } catch (error) {
+         console.error(error);
+         return res.status(500).json({
+             message: "Internal server error",
+         });
+     }
+}
+
+module.exports = { getPaket, getPaketById, createPaket, updatePaket, deletePaket, update_status };

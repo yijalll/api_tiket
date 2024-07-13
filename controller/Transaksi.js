@@ -6,15 +6,35 @@ const Jurusan = require('../models/JurusanModel')
 const getTransaksi = async (req, res) => {
     try {
         const id = req.id
-        const transaksi = await Transaksi.findAll({where: {'user_id': id}});
+        const transaksi = await Transaksi.findAll({where: {user_id: id}});
 
+        const responData = transaksi.map((data)=>{
+            return {
+                id: data.id,
+            jurusan: {
+                id: data.jurusan_id,
+            },
+           user : {
+            nama: data.nama,
+            telp: data.telp,
+            jk: data.jk,
+            user_id: data.user_id,
+            alamat: data.alamat,
+            kontak_darurat: data.kontak_darurat,
+        },
+            ispaid: data.ispaid,   
+            bukti_bayar: data.bukti_bayar,
+            createdAt: data.createdAt,
+            updatedAt: data.updatedAt
+            }
+        })
         if (transaksi.length == 0) {
             return res.status(400).json({
                 message: 'cant get this transaction',
             });
         } else {
             return res.status(200).json({
-                data: transaksi,
+                data: responData,
                 message: "success get all data",
             });
         }
@@ -38,8 +58,26 @@ const getTransaksiById = async (req, res) => {
             });
         }
 
+        const responseData = {
+            id: transaksi.id,
+            jurusan: {
+                id: transaksi.jurusan_id,
+            },
+           user : {
+            nama: transaksi.nama,
+            telp: transaksi.telp,
+            jk: transaksi.jk,
+            user_id: transaksi.user_id,
+            alamat: transaksi.alamat,
+            kontak_darurat: transaksi.kontak_darurat,
+        },
+            ispaid: transaksi.ispaid,   
+            bukti_bayar: transaksi.bukti_bayar,
+            createdAt: transaksi.createdAt,
+            updatedAt: transaksi.updatedAt
+        };
         return res.status(200).json({
-            data: transaksi,
+            data: responseData,
             message: "success get data",
         });
     } catch (error) {
