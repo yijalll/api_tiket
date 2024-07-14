@@ -7,8 +7,8 @@ const { multerValidation, uploadGcs } = require("../helper/gcsUpload");
 router.get("/transaksi", verifyToken, getTransaksi);
 router.get("/transaksi/:id",verifyToken, getTransaksiById);
 router.post("/transaksi", verifyToken, multerValidation, uploadGcs, createTransaksi);
-router.put("/transaksi/:id", verifyToken, updateTransaksi);
+router.put("/transaksi/:id", verifyToken, multerValidation, uploadGcs, updateTransaksi);
 router.delete("/transaksi/:id",verifyToken, deleteTransaksi);
 
 
-module.exports = router;
+module.exports = router; 

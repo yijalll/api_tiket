@@ -58,12 +58,12 @@ const Paket = db.define(
         },
         
         kota_kab_pengirim:{
-            type:DataTypes.STRING(10),
+            type:DataTypes.STRING(20),
             allowNull:false
         },
 
         kota_kab_penerima:{
-            type:DataTypes.STRING(10),
+            type:DataTypes.STRING(20),
             allowNull:false
         },
 

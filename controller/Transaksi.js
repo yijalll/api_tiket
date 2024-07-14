@@ -149,21 +149,63 @@ const createTransaksi = async (req, res) => {
 const updateTransaksi = async (req, res) => {
     try {
         const { id } = req.params;
-        const { jurusan_id, nama, telp, jk, ispaid, user_id, jumlah_seat, jumlah_bayar, bukti_bayar } = req.body;
+        const { jurusan_id, nama, telp, jk, ispaid, user_id, alamat, kontak_darurat } = req.body;
 
-        const [updated] = await Transaksi.update(
-            { jurusan_id, nama, telp, jk, ispaid, user_id, jumlah_seat, jumlah_bayar, bukti_bayar },
-            { where: { id } }
-        );
-
-        if (updated === 0) {
-            return res.status(404).json({
-                message: "Transaksi not found",
-            });
+        if (!jurusan_id || !nama || !telp || !jk || ispaid === undefined || !user_id || !alamat || !kontak_darurat) {
+            return res.status(400).json({ message: "Missing required fields" });
         }
 
+        const transaksi = await Transaksi.findOne({
+            where: {
+                id
+            }
+        });
+
+        if (!transaksi) return res.status(404).json({ message: "Transaksi tidak ditemukan" });
+
+        const jurusan = await Jurusan.findOne({
+            where: {
+                id: jurusan_id
+            }
+        });
+
+        if (!jurusan) return res.status(404).json({ message: "Jurusan tidak ditemukan" });
+
+        const bukti_bayar = req.file?.cloudStoragePublicUrl || transaksi.bukti_bayar;
+
+        await transaksi.update({
+            jurusan_id,
+            nama,
+            telp,
+            jk,
+            ispaid,
+            user_id,
+            alamat,
+            kontak_darurat,
+            bukti_bayar
+        });
+
+        const responseData = {
+            id: transaksi.id,
+            jurusan: {
+                id: jurusan.id,
+                // nama: jurusan.nama
+            },
+            nama: transaksi.nama,
+            telp: transaksi.telp,
+            jk: transaksi.jk,
+            ispaid: transaksi.ispaid,
+            user_id: transaksi.user_id,
+            alamat: transaksi.alamat,
+            kontak_darurat: transaksi.kontak_darurat,
+            bukti_bayar: transaksi.bukti_bayar, 
+            createdAt: transaksi.createdAt,
+            updatedAt: transaksi.updatedAt
+        };
+
         return res.status(200).json({
-            message: "success update data",
+            data: responseData,
+            message: "Success update data",
         });
     } catch (error) {
         console.error(error);
@@ -172,6 +214,7 @@ const updateTransaksi = async (req, res) => {
         });
     }
 };
+
 
 const deleteTransaksi = async (req, res) => {
     try {
