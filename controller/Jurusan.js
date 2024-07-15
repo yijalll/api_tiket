@@ -41,7 +41,7 @@ const getJurusanById = async (req, res) => {
 
 const createJurusan = async (req, res) => {
     try {
-        const { kota_id, jam, tanggal, harga, mobil_id } = req.body;
+        const { nama, kota_id, jam, tanggal, harga, mobil_id } = req.body;
 
         const [jamStr, menitStr] = jam.split(':');
         const waktu = new Date();
@@ -52,6 +52,7 @@ const createJurusan = async (req, res) => {
         const tanggalObj = new Date(`${tahunStr}-${bulanStr}-${tanggalStr}`);
 
         const data = await Jurusan.create({
+            nama,
             kota_id,
             jam: waktu,
             tanggal: tanggalObj,
@@ -74,7 +75,7 @@ const createJurusan = async (req, res) => {
 const updateJurusan = async (req, res) => {
     try {
         const { id } = req.params;
-        const { kota_id, jam, tanggal, harga, mobil_id } = req.body;
+        const { nama,kota_id, jam, tanggal, harga, mobil_id } = req.body;
 
         const [jamStr, menitStr] = jam.split(':');
         const waktu = new Date();
@@ -92,6 +93,7 @@ const updateJurusan = async (req, res) => {
         }
 
         await jurusan.update({
+            nama,
             kota_id,
             jam: waktu,
             tanggal: tanggalObj,

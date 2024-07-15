@@ -120,7 +120,7 @@ const createTransaksi = async (req, res) => {
             id: newTransaksi.id,
             jurusan: {
                 id: jurusan.id,
-                // nama: jurusan.nama
+                nama_jurusan: jurusan.nama
             },
             nama: newTransaksi.nama,
             telp: newTransaksi.telp,
@@ -189,7 +189,7 @@ const updateTransaksi = async (req, res) => {
             id: transaksi.id,
             jurusan: {
                 id: jurusan.id,
-                // nama: jurusan.nama
+                nama: jurusan.nama
             },
             nama: transaksi.nama,
             telp: transaksi.telp,

@@ -15,6 +15,11 @@ const Jurusan = db.define(
             allowNull:false
         },
 
+        nama : {
+            type:DataTypes.STRING(20),
+            allowNull:false,
+        },
+
         kota_id:{
             type:DataTypes.INTEGER(11),
             allowNull:false,

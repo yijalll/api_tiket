@@ -5,6 +5,7 @@ const getPaket = async (req, res) => {
         const paket = await Paket.findAll();
         const responData = paket.map((data)=>{
             return {
+                id : data.id,
                 isi: data.isi_paket,
                 pengirim : {
                     nama : data.nama_pengirim,
@@ -45,6 +46,7 @@ const getPaketById = async (req, res) => {
         const paket = await Paket.findOne({ where: { id } });
 
         const responData = {
+            id : paket.id,
             isi: paket.isi_paket,
             pengirim : {
                 nama : paket.nama_pengirim,
