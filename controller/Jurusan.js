@@ -1,13 +1,47 @@
+const { where } = require('sequelize');
 const Jurusan = require('../models/JurusanModel');
+const Kotum = require('../models/KotaModel');
 const Mobil = require('../models/MobilModel');
+
 
 const getJurusan = async (req, res) => {
     try {
-        const jurusan = await Jurusan.findAll();
-        return res.status(200).json({
-            data: jurusan,
-            message: "success get all data",
+        const jurusan = await Jurusan.findAll({
+            include: [
+                {model: Mobil,},
+                {model: Kotum}
+            ]
         });
+
+        const responData = jurusan.map((data) => {
+            return {
+                id: data.id,
+                kota: {
+                    id: data.kota_id,
+                    nama_kota: data.Kotum.nama_kota
+                },
+                mobil:{
+                    id: data.mobil_id,
+                    nama_mobil: data.Mobil.nama_mobil
+                },
+                jam: data.jam,
+                tanggal: data.tanggal,
+                harga: data.harga,
+                createdAt: data.createdAt,
+                updatedAt: data.updatedAt
+            };
+        });
+
+        if (responData.length === 0) {
+            return res.status(400).json({
+                message: 'Cannot get this transaction',
+            });
+        } else {
+            return res.status(200).json({
+                data: responData,
+                message: "Success get all data",
+            });
+        }
     } catch (error) {
         console.error(error);
         return res.status(500).json({
@@ -15,6 +49,9 @@ const getJurusan = async (req, res) => {
         });
     }
 };
+
+
+
 
 const getJurusanById = async (req, res) => {
     try {

@@ -5,6 +5,7 @@ const { verifyToken } = require("../middleware/VerifyToken");
 const { multerValidation, uploadGcs } = require("../helper/gcsUpload");
 
 router.get("/transaksi/admin",verifyToken, getTransaksiAdmin);
+router.get("/transaksi/me",verifyToken, getTransaksi);
 router.get("/transaksi", verifyToken, getTransaksi);
 router.get("/transaksi/:id",verifyToken, getTransaksiById);
 router.post("/transaksi", verifyToken, multerValidation, uploadGcs, createTransaksi);
