@@ -6,27 +6,80 @@ const Jurusan = require('../models/JurusanModel')
 const getTransaksi = async (req, res) => {
     try {
         const id = req.id
-        const transaksi = await Transaksi.findAll({where: {user_id: id}});
+        const transaksi = await Transaksi.findAll({
+            where: {user_id: id},
+            include: {
+                model : Jurusan
+            }
+        },);
 
         const responData = transaksi.map((data)=>{
             return {
                 id: data.id,
-            jurusan: {
-                id: data.jurusan_id,
-            },
-           user : {
-            nama: data.nama,
-            telp: data.telp,
-            jk: data.jk,
-            user_id: data.user_id,
-            alamat: data.alamat,
-            kontak_darurat: data.kontak_darurat,
-        },
-            ispaid: data.ispaid,   
-            bukti_bayar: data.bukti_bayar,
-            createdAt: data.createdAt,
-            updatedAt: data.updatedAt
+                jurusan: {
+                    id: data.jurusan_id,
+                    nama : data.Jurusan.nama
+                },
+                user : {
+                    nama: data.nama,
+                    telp: data.telp,
+                    jk: data.jk,
+                    user_id: data.user_id,
+                    alamat: data.alamat,
+                    kontak_darurat: data.kontak_darurat,
+                },
+                    ispaid: data.ispaid,   
+                    bukti_bayar: data.bukti_bayar,
+                    createdAt: data.createdAt,
+                    updatedAt: data.updatedAt
+                }
+        })
+        if (transaksi.length == 0) {
+            return res.status(400).json({
+                message: 'cant get this transaction',
+            });
+        } else {
+            return res.status(200).json({
+                data: responData,
+                message: "success get all data",
+            });
+        }
+        
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: "Internal server error",
+        });
+    }
+};
+
+const getTransaksiAdmin = async (req, res) => {
+    try {
+        const transaksi = await Transaksi.findAll({
+            include: {
+                model : Jurusan
             }
+        },);
+        const responData = transaksi.map((data)=>{
+            return {
+                id: data.id,
+                jurusan: {
+                    id: data.jurusan_id,
+                    nama : data.Jurusan.nama
+                },
+                user : {
+                    nama: data.nama,
+                    telp: data.telp,
+                    jk: data.jk,
+                    user_id: data.user_id,
+                    alamat: data.alamat,
+                    kontak_darurat: data.kontak_darurat,
+                },
+                    ispaid: data.ispaid,   
+                    bukti_bayar: data.bukti_bayar,
+                    createdAt: data.createdAt,
+                    updatedAt: data.updatedAt
+                }
         })
         if (transaksi.length == 0) {
             return res.status(400).json({
@@ -50,7 +103,13 @@ const getTransaksi = async (req, res) => {
 const getTransaksiById = async (req, res) => {
     try {
         const { id } = req.params;
-        const transaksi = await Transaksi.findOne({ where: { id } });
+        const transaksi = await Transaksi.findOne({ 
+            where: { id },
+            include :{
+                model: Jurusan
+            }
+        
+        });
 
         if (!transaksi) {
             return res.status(404).json({
@@ -62,6 +121,7 @@ const getTransaksiById = async (req, res) => {
             id: transaksi.id,
             jurusan: {
                 id: transaksi.jurusan_id,
+                nama : transaksi.Jurusan.nama
             },
            user : {
             nama: transaksi.nama,
@@ -90,7 +150,8 @@ const getTransaksiById = async (req, res) => {
 
 const createTransaksi = async (req, res) => {
     try {
-        const { jurusan_id, nama, telp, jk, ispaid, user_id, alamat, kontak_darurat } = req.body;
+        const user_id = req.id
+        const { jurusan_id, nama, telp, jk, ispaid, alamat, kontak_darurat } = req.body;
         if (!jurusan_id || !nama || !telp || !jk || ispaid === undefined || !user_id || !alamat || !kontak_darurat) {
             return res.status(400).json({ message: "Missing required fields" });
         }
@@ -149,7 +210,7 @@ const createTransaksi = async (req, res) => {
 const updateTransaksi = async (req, res) => {
     try {
         const { id } = req.params;
-        const { jurusan_id, nama, telp, jk, ispaid, user_id, alamat, kontak_darurat } = req.body;
+        const { jurusan_id, nama, telp, jk, ispaid, alamat, kontak_darurat } = req.body;
 
         if (!jurusan_id || !nama || !telp || !jk || ispaid === undefined || !user_id || !alamat || !kontak_darurat) {
             return res.status(400).json({ message: "Missing required fields" });
@@ -179,7 +240,6 @@ const updateTransaksi = async (req, res) => {
             telp,
             jk,
             ispaid,
-            user_id,
             alamat,
             kontak_darurat,
             bukti_bayar
@@ -241,4 +301,4 @@ const deleteTransaksi = async (req, res) => {
     }
 };
 
-module.exports = { getTransaksi, getTransaksiById, createTransaksi, updateTransaksi, deleteTransaksi };
+module.exports = { getTransaksi, getTransaksiById, createTransaksi, updateTransaksi, deleteTransaksi, getTransaksiAdmin };
