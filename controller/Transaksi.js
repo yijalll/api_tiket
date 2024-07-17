@@ -212,7 +212,7 @@ const updateTransaksi = async (req, res) => {
         const { id } = req.params;
         const { jurusan_id, nama, telp, jk, ispaid, alamat, kontak_darurat } = req.body;
 
-        if (!jurusan_id || !nama || !telp || !jk || ispaid === undefined || !user_id || !alamat || !kontak_darurat) {
+        if (!jurusan_id || !nama || !telp || !jk || ispaid === undefined || !alamat || !kontak_darurat) {
             return res.status(400).json({ message: "Missing required fields" });
         }
 
@@ -232,8 +232,6 @@ const updateTransaksi = async (req, res) => {
 
         if (!jurusan) return res.status(404).json({ message: "Jurusan tidak ditemukan" });
 
-        const bukti_bayar = req.file?.cloudStoragePublicUrl || transaksi.bukti_bayar;
-
         await transaksi.update({
             jurusan_id,
             nama,
@@ -241,8 +239,8 @@ const updateTransaksi = async (req, res) => {
             jk,
             ispaid,
             alamat,
-            kontak_darurat,
-            bukti_bayar
+            kontak_darurat
+            // Keep the existing bukti_bayar value, do not update it
         });
 
         const responseData = {
@@ -255,7 +253,6 @@ const updateTransaksi = async (req, res) => {
             telp: transaksi.telp,
             jk: transaksi.jk,
             ispaid: transaksi.ispaid,
-            user_id: transaksi.user_id,
             alamat: transaksi.alamat,
             kontak_darurat: transaksi.kontak_darurat,
             bukti_bayar: transaksi.bukti_bayar, 
