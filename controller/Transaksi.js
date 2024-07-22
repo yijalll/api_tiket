@@ -148,6 +148,55 @@ const getTransaksiById = async (req, res) => {
     }
 };
 
+const getTransaksiTiket = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const transaksi = await Transaksi.findOne({ 
+            where: { id },
+            include :{
+                model: Jurusan,
+            }
+        
+        });
+
+        if (!transaksi) {
+            return res.status(404).json({
+                message: "Transaksi not found",
+            });
+        }
+
+        const responseData = {
+            id: transaksi.id,
+            jurusan: {
+                nama : transaksi.Jurusan.nama,
+                harga: transaksi.Jurusan.harga,
+                tanggal : transaksi.Jurusan.tanggal,
+                jam : transaksi.Jurusan.jam,
+
+            },
+           user : {
+            nama: transaksi.nama,
+            telp: transaksi.telp,
+            jk: transaksi.jk,
+            user_id: transaksi.user_id,
+            alamat: transaksi.alamat,
+            kontak_darurat: transaksi.kontak_darurat,
+        },
+            createdAt: transaksi.createdAt,
+            updatedAt: transaksi.updatedAt
+        };
+        return res.status(200).json({
+            data: responseData,
+            message: "success get data",
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: "Internal server error",
+        });
+    }
+};
+
 const createTransaksi = async (req, res) => {
     try {
         const user_id = req.id
@@ -298,4 +347,4 @@ const deleteTransaksi = async (req, res) => {
     }
 };
 
-module.exports = { getTransaksi, getTransaksiById, createTransaksi, updateTransaksi, deleteTransaksi, getTransaksiAdmin };
+module.exports = { getTransaksi, getTransaksiById, createTransaksi, updateTransaksi, deleteTransaksi, getTransaksiAdmin, getTransaksiTiket };

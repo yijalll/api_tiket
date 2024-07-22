@@ -85,6 +85,51 @@ const getPaketById = async (req, res) => {
     }
 };
 
+const getStruk = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const paket = await Paket.findOne({ where: { id } });
+
+        const responData = {
+            id : paket.id,
+            isi: paket.isi_paket,
+            pengirim : {
+                nama : paket.nama_pengirim,
+                telp : paket.telp_pengirim,
+                alamat : paket.alamat_pickup,
+                provinsi : paket.provinsi_pengirim,
+                kota_kab : paket.kota_kab_pengirim,
+                kecamatan : paket.kecamatan_pengirim,
+                kelurahan : paket.kelurahan_pengirim,
+            },
+            penerima : {
+                nama : paket.nama_penerima,
+                telp : paket.telp_penerima,
+                alamat : paket.alamat_deliv,
+                provinsi : paket.provinsi_penerima,
+                kota_kab : paket.kota_kab_penerima,
+                kecamatan : paket.kecamatan_penerima,
+                kelurahan : paket.kelurahan_penerima,
+            }
+        }
+        if (!paket) {
+            return res.status(404).json({
+                message: "Paket not found",
+            });
+        }
+
+        return res.status(200).json({
+            data: responData,
+            message: "success get data",
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: "Internal server error",
+        });
+    }
+};
+
 const createPaket = async (req, res) => {
     try {
        const {isi, pengirim, penerima} = req.body; 
@@ -220,4 +265,4 @@ const update_status = async(req,res) => {
      }
 }
 
-module.exports = { getPaket, getPaketById, createPaket, updatePaket, deletePaket, update_status };
+module.exports = { getPaket, getPaketById, createPaket, updatePaket, deletePaket, update_status, getStruk };
