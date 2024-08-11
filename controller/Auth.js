@@ -3,7 +3,7 @@ const User = require("../models/UserModel");
 const jwt = require("jsonwebtoken")
 
 const Register = async (req, res) => {
-  const { name, email, phone, password, confPassword, role } = req.body;
+  const { name, email, phone, password, confPassword, role, alamat } = req.body;
   if (password !== confPassword) {
     return res.status(400).json({
       message: "password doesn't match",
@@ -30,6 +30,7 @@ const Register = async (req, res) => {
       name: name,
       email: email,
       phone: phone,
+      alamat: alamat,
       password: hashPassword,
       role: role || "user", // Default to "user" if no role is provided
     });

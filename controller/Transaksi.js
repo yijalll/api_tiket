@@ -1,7 +1,6 @@
 const Transaksi = require('../models/TransaksiModel');
 const Users = require('../models/UserModel')
 const Jurusan = require('../models/JurusanModel')
-const Paket = require('../models/PaketModel')
 
 
 const getTransaksi = async (req, res) => {
@@ -14,33 +13,7 @@ const getTransaksi = async (req, res) => {
             }
         },);
 
-        const paket = await Paket.findAll();
-        const responDataPaket = paket.map((data)=>{
-            return {
-                id : data.id,
-                isi: data.isi_paket,
-                pengirim : {
-                    nama : data.nama_pengirim,
-                    telp : data.telp_pengirim,
-                    alamat : data.alamat_pickup,
-                    provinsi : data.provinsi_pengirim,
-                    kota_kab : data.kota_kab_pengirim,
-                    kecamatan : data.kecamatan_pengirim,
-                    kelurahan : data.kelurahan_pengirim,
-                },
-                penerima : {
-                    nama : data.nama_penerima,
-                    telp : data.telp_penerima,
-                    alamat : data.alamat_deliv,
-                    provinsi : data.provinsi_penerima,
-                    kota_kab : data.kota_kab_penerima,
-                    kecamatan : data.kecamatan_penerima,
-                    kelurahan : data.kelurahan_penerima,
-                }
-            }
-        })
-
-        const responDatatransaksi = transaksi.map((data)=>{
+        const responData = transaksi.map((data)=>{
             return {
                 id: data.id,
                 jurusan: {
@@ -67,8 +40,7 @@ const getTransaksi = async (req, res) => {
             });
         } else {
             return res.status(200).json({
-                dataTransaksi: responDatatransaksi,
-                dataPaket : responDataPaket ,
+                data: responData,
                 message: "success get all data",
             });
         }

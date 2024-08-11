@@ -62,7 +62,7 @@ const getProfile = async (req, res) => {
 }
 
 const createUser = async (req, res) => {
-  const { name, email, phone, password, confPassword, role } = req.body;
+  const { name, email, phone, password, confPassword, role, alamat } = req.body;
   if (password !== confPassword) {
     return res.status(400).json({
       message: "password doesn't match",
@@ -89,6 +89,7 @@ const createUser = async (req, res) => {
       name: name,
       email: email,
       phone: phone,
+      alamat: alamat,
       password: hashPassword,
       role: role || "user", // Default to "user" if no role is provided
     });
@@ -106,7 +107,7 @@ const createUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   const { id } = req.params;
-  const { name, email, phone, password, confPassword, role } = req.body;
+  const { name, email, phone, password, confPassword, role, alamat } = req.body;
 
   try {
     const user = await User.findByPk(id);
@@ -128,6 +129,7 @@ const updateUser = async (req, res) => {
       email: email || user.email,
       phone: phone || user.phone,
       role: role || user.role,
+      alamat: alamat || user.alamat,
     };
 
     if (password) {

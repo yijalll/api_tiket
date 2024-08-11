@@ -26,7 +26,10 @@ const Users = db.define(
       },
     },
     phone: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING, 
+    },
+    alamat: {
+      type: DataTypes.STRING(50)
     },
     password: {
       type: DataTypes.STRING,

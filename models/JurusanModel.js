@@ -47,7 +47,7 @@ const Jurusan = db.define(
         mobil_id:{
             type:DataTypes.INTEGER(),
             references:{
-                model: Mobil,
+                model: Mobil, 
                 key: 'id'
             }
         },
