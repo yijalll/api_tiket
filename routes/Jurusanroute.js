@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const { getJurusan, createJurusan, updateJurusan, deleteJurusan, getJurusanById, changeStatus} = require("../controller/Jurusan");
+const { getJurusan, createJurusan, updateJurusan, deleteJurusan, getJurusanAktif, getJurusanById, changeStatus} = require("../controller/Jurusan");
 const { verifyToken } = require("../middleware/VerifyToken");
 
 router.get("/jurusan", verifyToken, getJurusan);
+router.get("/jurusan/aktif", verifyToken, getJurusanAktif);
 router.get("/jurusan/:id", verifyToken,  getJurusanById);
 router.post("/jurusan", verifyToken, createJurusan);
 router.put("/jurusan/:id", verifyToken, updateJurusan);
