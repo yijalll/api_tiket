@@ -7,6 +7,7 @@ const Mobil = require('../models/MobilModel');
 const getJurusan = async (req, res) => {
     try {
         const jurusan = await Jurusan.findAll({
+            where:{isActive:true},
             include: [
                 { model: Mobil, },
                 { model: Kotum }
@@ -27,6 +28,7 @@ const getJurusan = async (req, res) => {
                 jam: data.jam,
                 tanggal: data.tanggal,
                 harga: data.harga,
+                isActive: data.isActive,
                 createdAt: data.createdAt,
                 updatedAt: data.updatedAt
             };
