@@ -51,6 +51,11 @@ const Jurusan = db.define(
                 key: 'id'
             }
         },
+        isActive:{
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: true
+        }
     },
     {
         freezeTableName: true,

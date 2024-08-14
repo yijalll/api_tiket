@@ -8,8 +8,8 @@ const getJurusan = async (req, res) => {
     try {
         const jurusan = await Jurusan.findAll({
             include: [
-                {model: Mobil,},
-                {model: Kotum}
+                { model: Mobil, },
+                { model: Kotum }
             ]
         });
 
@@ -20,7 +20,7 @@ const getJurusan = async (req, res) => {
                     id: data.kota_id,
                     nama_kota: data.Kotum.nama_kota
                 },
-                mobil:{
+                mobil: {
                     id: data.mobil_id,
                     nama_mobil: data.Mobil.nama_mobil
                 },
@@ -112,7 +112,7 @@ const createJurusan = async (req, res) => {
 const updateJurusan = async (req, res) => {
     try {
         const { id } = req.params;
-        const { nama,kota_id, jam, tanggal, harga, mobil_id } = req.body;
+        const { nama, kota_id, jam, tanggal, harga, mobil_id } = req.body;
 
         const [jamStr, menitStr] = jam.split(':');
         const waktu = new Date();
@@ -174,4 +174,33 @@ const deleteJurusan = async (req, res) => {
     }
 };
 
-module.exports = { getJurusan, getJurusanById, createJurusan, updateJurusan, deleteJurusan };
+const changeStatus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { isActive } = req.body;
+
+        const jurusan = await Jurusan.findByPk(id);
+        if (!jurusan) {
+            return res.status(404).json({
+                message: "Jurusan not found",
+            });
+        }
+
+        const update = await Jurusan.update({
+            isActive
+        },
+            { where: { id } }
+        )
+
+        return res.status(200).json({
+            message: "sukses update data",
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: "Internal server error",
+        });
+    }
+};
+
+module.exports = { getJurusan, getJurusanById, createJurusan, updateJurusan, deleteJurusan, changeStatus };
